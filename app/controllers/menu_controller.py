@@ -5,16 +5,17 @@ from config import db
 def get_all_menus():
     menus = Menu.query.all()
     print(menus)
-    return jsonify([{
-        'id': menu.id,
-        'name': menu.name,
-        'description': menu.description,
-        'price': float(menu.price)
-    } for menu in menus]), 200
+    response={
+        "menus": [menu.to_dict() for menu in menus],
+        "count": len(menus),
+        "message": "Success"
+    }
+    return jsonify(response), 200
 
 def create_menu():
     data = request.json
-    new_menu = Menu(name=data['name'], description=data['description'], price=data['price'])
+    image_url = data.get('image_url', None)
+    new_menu = Menu(name=data['name'], description=data['description'], price=data['price'],image_url=image_url)
     db.session.add(new_menu)
     db.session.commit()
     return jsonify({"msg": "Menu item created successfully", "id": new_menu.id}), 201
