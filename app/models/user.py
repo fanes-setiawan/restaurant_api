@@ -8,6 +8,8 @@ class User(db.Model):
     username = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255))
     role = db.Column(db.Enum('admin', 'customer'), nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -22,6 +24,7 @@ class User(db.Model):
         return {
             'id': self.id,
             'username': self.username,
-            'role': self.role
+            'role': self.role,
+            'createdAt': self.created_at,
         }
     

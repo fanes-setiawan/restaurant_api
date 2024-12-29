@@ -12,7 +12,11 @@ def login():
     user = User.query.filter_by(username=username).first()
     if user and user.check_password(password):
         access_token = create_access_token(identity=user.id , expires_delta=timedelta(hours=12))
-        return jsonify(access_token=access_token), 200
+        response = {
+            "access_token": access_token,
+            "role": user.role,
+        }
+        return jsonify(response), 200
     return jsonify({"msg": "Bad username or password"}), 401
 
 def register_user():

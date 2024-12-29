@@ -1,8 +1,10 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy 
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app,resources={r"/api/*": {"origins": "*"}},supports_credentials=True)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://secret123:2wsx1qaz@localhost:3306/restaurant_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
