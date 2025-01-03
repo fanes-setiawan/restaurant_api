@@ -68,3 +68,9 @@ def get_payments_by_order(order_id):
         "payment_method": payment.payment_method,
         "payment_date": payment.payment_date.isoformat()
     } for payment in payments]), 200
+    
+def delete_payment(payment_id):
+    payment = Payment.query.get_or_404(payment_id)
+    db.session.delete(payment)
+    db.session.commit()
+    return jsonify({"msg": "Payment deleted successfully"}), 200
