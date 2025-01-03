@@ -31,6 +31,10 @@ def get_all_users():
     }
     return jsonify(response), 200
 
+def get_user_by_id(user_id):
+    user = User.query.get_or_404(user_id)
+    return jsonify(user.to_dict()), 200
+
 def create_user():
     data = request.json
     if not data or 'username' not in data or 'password' not in data or 'role' not in data:
@@ -61,11 +65,19 @@ def update_user(user_id):
     
     if 'role' in data:
         user.role = data['role']
+    user.updated_at = db.func.now()
 
     db.session.commit()
     return jsonify({"msg": "User updated successfully"}), 200
 
 def delete_user(user_id):
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({"msg": "User deleted successfully"}), 200
+
+#delete_user >=1 by id
+def delete_user_by_id(user_id):
     user = User.query.get_or_404(user_id)
     db.session.delete(user)
     db.session.commit()

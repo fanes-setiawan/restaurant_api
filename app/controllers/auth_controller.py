@@ -15,6 +15,7 @@ def login():
         response = {
             "access_token": access_token,
             "role": user.role,
+            "username": user.username,
         }
         return jsonify(response), 200
     return jsonify({"msg": "Bad username or password"}), 401

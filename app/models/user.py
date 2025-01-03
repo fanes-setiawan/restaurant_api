@@ -18,13 +18,10 @@ class User(db.Model):
         return check_password_hash(self.password, password)
     
     def to_dict(self):
-        """
-        Convert the User object to a dictionary for JSON serialization.
-        """
         return {
             'id': self.id,
             'username': self.username,
             'role': self.role,
             'createdAt': self.created_at,
+            'updatedAt': self.updated_at
         }
-    
