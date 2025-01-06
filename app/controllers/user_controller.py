@@ -21,6 +21,7 @@ def login():
     else:
         return jsonify({"msg": "Bad username or password"}), 401
 
+
 def get_all_users():
     users = User.query.all()
     print(users)
@@ -71,13 +72,6 @@ def update_user(user_id):
     return jsonify({"msg": "User updated successfully"}), 200
 
 def delete_user(user_id):
-    user = User.query.get_or_404(user_id)
-    db.session.delete(user)
-    db.session.commit()
-    return jsonify({"msg": "User deleted successfully"}), 200
-
-#delete_user >=1 by id
-def delete_user_by_id(user_id):
     user = User.query.get_or_404(user_id)
     db.session.delete(user)
     db.session.commit()
