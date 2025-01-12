@@ -3,7 +3,7 @@ info:
   title: Restaurant API
   description: Comprehensive API documentation for the restaurant management system.
   version: "1.0.0"
-host: "https://restaurant-api-v1.vercel.app"
+host: "restaurant-api-v1.vercel.app"
 basePath: "/api"
 schemes:
   - https
