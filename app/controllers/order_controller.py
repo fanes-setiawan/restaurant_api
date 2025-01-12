@@ -4,6 +4,7 @@ from flask import jsonify, request
 from app.models.order import Order
 from app.models.order_item import OrderItem
 from app.models.menu import Menu
+from app.models.user import User
 from config import db
 
 def get_all_orders():
@@ -26,16 +27,30 @@ def get_all_orders():
 
 def create_order():
     data = request.json
-    new_order = Order(user_id=data['user_id'], table_number=data['table_number'])
-    db.session.add(new_order)
-    db.session.commit()
+    if not data or "user_id" not in data or "table_number" not in data or "menu" not in data:
+        return jsonify({"error": "Invalid data format"}), 400
+    user = User.query.get(data['user_id'])
+    if not user:
+        return jsonify({"error": "User not found"}), 404
     menus = data['menu']
     for menu in menus:
-        order_item = OrderItem(order_id=new_order.id, menu_id=menu["id"], quantity=menu['quantity'])
-        db.session.add(order_item)
-        db.session.commit()
-        
+        menu_id = menu.get("id")
+        if not Menu.query.get(menu_id):
+            return jsonify({"error": f"Menu with ID {menu_id} not found"}), 404
+
+    new_order = Order(user_id=data['user_id'], table_number=data['table_number'])
+    db.session.add(new_order)
+    db.session.flush()
+
+    order_items = [
+        OrderItem(order_id=new_order.id, menu_id=menu["id"], quantity=menu["quantity"])
+        for menu in menus
+    ]
+    db.session.add_all(order_items)
+    db.session.commit()
+
     return jsonify({"msg": "Order created successfully", "id": new_order.id}), 201
+
 
 def update_order_status(order_id):
     order = Order.query.get_or_404(order_id)
