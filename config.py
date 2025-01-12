@@ -21,7 +21,7 @@ def handle_options_request():
 
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://secret123:2wsx1qaz@localhost:3306/restaurant_db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://restaurantDb_poempushso:43190d57091ee0e83816925851d9c3b6fdae540b@ie3ct.h.filess.io:3306/restaurantDb_poempushso'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://restaurantDb_poempushso:43190d57091ee0e83816925851d9c3b6fdae540b@ie3ct.h.filess.io:3306/restaurantDb_poempushso'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = '2wsx1qaz' 
 
