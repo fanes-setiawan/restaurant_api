@@ -1,0 +1,487 @@
+swagger: "2.0"
+info:
+  title: Restaurant API
+  description: Comprehensive API documentation for the restaurant management system.
+  version: "1.0.0"
+host: "127.0.0.1:5000"
+basePath: "/api"
+schemes:
+  - http
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: "Enter 'Bearer <your access token>' to authenticate."
+    x-tokenPrefix: "Bearer "
+paths:
+  /login:
+    post:
+      summary: User Login
+      description: Authenticate a user and provide a JWT token.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Login details
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+          description: Successful login
+        401:
+          description: Invalid username or password
+  /register:
+    post:
+      summary: User Registration
+      description: Register a new user.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Registration details
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+              role:
+                type: string
+                enum:
+                  - admin
+                  - customer
+      responses:
+        201:
+          description: User successfully registered
+        400:
+          description: Missing required fields or username already exists
+  /users:
+    get:
+      summary: Get all users
+      description: Retrieve a list of all users.
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of users
+    post:
+      summary: Create a new user
+      description: Add a new user to the system.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: body
+          name: body
+          description: User details
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+              role:
+                type: string
+                enum:
+                  - admin
+                  - customer
+      responses:
+        201:
+          description: User created successfully
+  /users/{user_id}:
+    get:
+      summary: Get user by ID
+      description: Retrieve details of a user by their ID.
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: User details
+        404:
+          description: User not found
+    put:
+      summary: Update user by ID
+      description: Update details of an existing user.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          description: User details to update
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+              role:
+                type: string
+                enum:
+                  - admin
+                  - customer
+      responses:
+        200:
+          description: User updated successfully
+        404:
+          description: User not found
+    delete:
+      summary: Delete user by ID
+      description: Remove a user from the system.
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: User deleted successfully
+        404:
+          description: User not found
+  /menus:
+    get:
+      summary: Get all menus
+      description: Retrieve a list of all menu items.
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of menu items
+    post:
+      summary: Create a menu
+      description: Add a new menu item to the system.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: body
+          name: body
+          description: Menu item details
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              price:
+                type: number
+                format: float
+              image_url:
+                type: string
+      responses:
+        201:
+          description: Menu item created successfully
+  /menus/{menu_id}:
+    get:
+      summary: Get menu by ID
+      description: Retrieve details of a specific menu item by its ID.
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: menu_id
+          required: true
+          type: integer
+          description: The ID of the menu item.
+      responses:
+        200:
+          description: Menu item details.
+        404:
+          description: Menu item not found.
+    put:
+      summary: Update menu by ID
+      description: Update details of a specific menu item by its ID.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: menu_id
+          required: true
+          type: integer
+          description: The ID of the menu item to update.
+        - in: body
+          name: body
+          description: Updated menu details.
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              price:
+                type: number
+                format: float
+              image_url:
+                type: string
+      responses:
+        200:
+          description: Menu item updated successfully.
+        404:
+          description: Menu item not found.
+    delete:
+      summary: Delete menu by ID
+      description: Remove a specific menu item by its ID.
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: menu_id
+          required: true
+          type: integer
+          description: The ID of the menu item to delete.
+      responses:
+        200:
+          description: Menu item deleted successfully.
+        404:
+          description: Menu item not found.
+  /orders:
+    get:
+      summary: Get all orders
+      description: Retrieve a list of all orders.
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of orders.
+    post:
+      summary: Create an order
+      description: Add a new order to the system.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: body
+          name: body
+          description: Order details including user, table, and menu items.
+          required: true
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: integer
+              table_number:
+                type: integer
+              menu:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    quantity:
+                      type: integer
+      responses:
+        201:
+          description: Order created successfully.
+  /orders/{order_id}:
+    get:
+      summary: Get order details
+      description: Retrieve details of a specific order by its ID.
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: order_id
+          required: true
+          type: integer
+          description: The ID of the order to retrieve.
+      responses:
+        200:
+          description: Order details.
+        404:
+          description: Order not found.
+    put:
+      summary: Update order status
+      description: Update the status of an existing order.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: order_id
+          required: true
+          type: integer
+          description: The ID of the order to update.
+        - in: body
+          name: body
+          description: Updated status of the order.
+          required: true
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                enum:
+                  - pending
+                  - served
+                  - paid
+      responses:
+        200:
+          description: Order status updated successfully.
+        404:
+          description: Order not found.
+    delete:
+      summary: Delete order by ID
+      description: Remove an order from the system by its ID.
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: order_id
+          required: true
+          type: integer
+          description: The ID of the order to delete.
+      responses:
+        200:
+          description: Order deleted successfully.
+        404:
+          description: Order not found.
+  /payments:
+    get:
+      summary: Get all payments
+      description: Retrieve a list of all payment records.
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: List of payments.
+    post:
+      summary: Create a payment
+      description: Record a payment for an order.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: body
+          name: body
+          description: Payment details.
+          required: true
+          schema:
+            type: object
+            properties:
+              order_id:
+                type: integer
+              amount:
+                type: number
+                format: float
+              payment_method:
+                type: string
+                enum:
+                  - cash
+                  - card
+      responses:
+        201:
+          description: Payment recorded successfully.
+  /payments/{payment_id}:
+    get:
+      summary: Get payment details
+      description: Retrieve details of a specific payment by its ID.
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: payment_id
+          required: true
+          type: integer
+          description: The ID of the payment to retrieve.
+      responses:
+        200:
+          description: Payment details.
+        404:
+          description: Payment not found.
+    delete:
+      summary: Delete payment by ID
+      description: Remove a payment record by its ID.
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: payment_id
+          required: true
+          type: integer
+          description: The ID of the payment to delete.
+      responses:
+        200:
+          description: Payment deleted successfully.
+        404:
+          description: Payment not found.
