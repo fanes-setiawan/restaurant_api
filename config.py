@@ -25,8 +25,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://restaurantDb_poempushso:43190d5
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = '2wsx1qaz' 
 
-db = SQLAlchemy()
-db.init_app(app)
+db = SQLAlchemy(app)
+# db.init_app(app)
 
 @app.route('/')
 def home():
