@@ -7,7 +7,6 @@ host: "https://restaurant-api-v1.vercel.app"
 basePath: "/api"
 schemes:
   - https
-  - http
 securityDefinitions:
   Bearer:
     type: apiKey
