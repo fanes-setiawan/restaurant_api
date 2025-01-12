@@ -5,7 +5,6 @@ from flask_cors import CORS
 from flasgger import Swagger
 
 app = Flask(__name__)
-# CORS(app,resources={r"/api/*": {"origins": "*"}},supports_credentials=True)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 Swagger(app, template_file="swagger.yaml")
