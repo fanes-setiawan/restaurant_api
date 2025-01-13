@@ -26,7 +26,7 @@ app.config['JWT_SECRET_KEY'] = '2wsx1qaz'
 
 db = SQLAlchemy(app)
 # db.init_app(app)
-
+#
 @app.route('/')
 def home():
     return "21.83.0627 | Fanes Setiawan | backend-restaurant-api"
